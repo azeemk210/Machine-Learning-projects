@@ -1,0 +1,13 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Run FastAPI App",
+			"type": "shell",
+			"command": "uvicorn main:app --reload",
+			"args": [],
+			"isBackground": true,
+			"problemMatcher": []
+		}
+	]
+}
