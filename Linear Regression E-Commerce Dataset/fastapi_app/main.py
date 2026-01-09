@@ -1,4 +1,7 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Form, Request
+from fastapi.responses import HTMLResponse
+from fastapi.templating import Jinja2Templates
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 import joblib
 import numpy as np
@@ -9,6 +12,10 @@ app = FastAPI()
 # Load the saved model
 model = joblib.load("../linear_regression_model.pkl")
 
+# Serve templates
+templates = Jinja2Templates(directory="templates")
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
 # Define the input data model
 class InputData(BaseModel):
     avg_session_length: float
@@ -16,21 +23,26 @@ class InputData(BaseModel):
     time_on_website: float
     length_of_membership: float
 
-# Define the root endpoint
-@app.get("/")
-def read_root():
-    return {"message": "Welcome to the Linear Regression Prediction API!"}
+# Render the input form
+@app.get("/", response_class=HTMLResponse)
+def read_root(request: Request):
+    return templates.TemplateResponse("index.html", {"request": request})
 
-# Define the prediction endpoint
+# Handle form submission
 @app.post("/predict")
-def predict(data: InputData):
+def predict_form(
+    avg_session_length: float = Form(...),
+    time_on_app: float = Form(...),
+    time_on_website: float = Form(...),
+    length_of_membership: float = Form(...),
+):
     try:
         # Prepare the input data for prediction
         input_features = np.array([
-            data.avg_session_length,
-            data.time_on_app,
-            data.time_on_website,
-            data.length_of_membership
+            avg_session_length,
+            time_on_app,
+            time_on_website,
+            length_of_membership
         ]).reshape(1, -1)
 
         # Make the prediction

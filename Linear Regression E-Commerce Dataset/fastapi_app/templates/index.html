@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linear Regression Predictor</title>
+</head>
+<body>
+    <h1>Linear Regression Predictor</h1>
+    <form action="/predict" method="post">
+        <label for="avg_session_length">Avg. Session Length:</label>
+        <input type="number" step="any" name="avg_session_length" id="avg_session_length" required><br>
+
+        <label for="time_on_app">Time on App:</label>
+        <input type="number" step="any" name="time_on_app" id="time_on_app" required><br>
+
+        <label for="time_on_website">Time on Website:</label>
+        <input type="number" step="any" name="time_on_website" id="time_on_website" required><br>
+
+        <label for="length_of_membership">Length of Membership:</label>
+        <input type="number" step="any" name="length_of_membership" id="length_of_membership" required><br>
+
+        <button type="submit">Predict</button>
+    </form>
+</body>
+</html>
